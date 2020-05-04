@@ -16,7 +16,7 @@ public class JpaMain {
 		
 		try {
 			tx.begin();
-			logic(em);			//비지니스 로직
+			identity(em);			//비지니스 로직
 			tx.commit();
 		} catch(Exception e) {
 			tx.rollback();
@@ -26,8 +26,15 @@ public class JpaMain {
 		emf.close();
 	}
 	
+	private static void identity(EntityManager em) {	//동일성 비교
+		Member a = em.find(Member.class, "member1");
+		Member b = em.find(Member.class, "member1");	//영속성 컨텍스트는 1차 캐시에 있는 동일 엔티티 인스턴스를 반환
+		
+		System.out.println(a == b);			//동일 인스턴스
+	}
+	
 	private static void logic(EntityManager em) {
-		String id = "id1";
+		String id = "member1";
 		Member member = new Member();
 		member.setId(id);
 		member.setUsername("AA");
@@ -43,6 +50,6 @@ public class JpaMain {
 		List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();	//목록 조회
 		System.out.println("members.size=" + members.size());
 		
-		em.remove(members);		//삭제
+		//em.remove(members);		//삭제
 	}
 }
