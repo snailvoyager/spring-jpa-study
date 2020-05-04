@@ -16,7 +16,7 @@ public class JpaMain {
 		
 		try {
 			tx.begin();
-			identity(em);			//비지니스 로직
+			testDetached(em);			//비지니스 로직
 			tx.commit();
 		} catch(Exception e) {
 			tx.rollback();
@@ -24,6 +24,21 @@ public class JpaMain {
 			em.close();
 		}
 		emf.close();
+	}
+	
+	private static void testDetached(EntityManager em) {
+		Member member = new Member();
+		member.setId("memberA");
+		member.setUsername("memberA");
+		
+		em.persist(member); 	//영속성 컨텍스트 저장
+		em.detach(member); 		//특정 엔티티를 영속성 컨텍스트에서 분리
+		
+		Member memberB = em.find(Member.class, "member1");		//영속성 컨텍스트 저장
+		
+		em.clear();		//영속성 컨텍스트 초기화
+		
+		memberB.setUsername("memberB");		//엔티티가 준영속 상태로 반영되지 않음
 	}
 	
 	private static void identity(EntityManager em) {	//동일성 비교
