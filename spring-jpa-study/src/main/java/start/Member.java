@@ -11,16 +11,19 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import chap04.RoleType;
 
 @Entity
-@Table(name="MEMBER")
+@Table(name="MEMBER", uniqueConstraints= {@UniqueConstraint(	//유니크 제약조건 추가
+		name="NAME_AGE_UNIQUE",
+		columnNames = {"NAME", "AGE"}	)})
 public class Member {
 	@Id			//PrimaryKey에 매핑 식필자 필드
 	@Column(name="ID")
 	private String id;
-	@Column(name="NAME")
+	@Column(name="NAME", nullable=false, length=10)		//NOT NULL, 길이 조건 추가
 	private String username;
 	
 	private Integer age;	//매핑정보가 없어도 필드명을 사용해서 컬럼명에 매핑
