@@ -5,14 +5,23 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="MEMBER_NEW")
+@SequenceGenerator(name="MEMBER_SEQ_GENERATOR",
+				sequenceName="MEMBER_SEQ",
+				initialValue=1,
+				allocationSize=1)
 public class MemberNew {
-	@Id
+	@Id 
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, 
+					generator="MEMBER_SEQ_GENERATOR")
 	@Column(name="MEMBER_ID")
 	private Long id;
 	
